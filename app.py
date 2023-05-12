@@ -1,18 +1,16 @@
 from flask import Flask,  request
-from subprocess import Popen, PIPE
-import socket
 app = Flask(__name__)
 
-
+myseed = 0
 @app.route('/',methods = ['POST', 'GET'])
 def seeds():
-# stress_cpu.py
+    global myseed
     if request.method == 'GET':
-       return str(socket.gethostname())
+       return str(myseed)
     else:
-        subprocess.Popen(["python3", "stress_cpu.py"])
-
-
+      content = request.get_json(silent=True)
+      myseed = content['num']
+      return "success"
 
        
 if __name__ == '__main__':
